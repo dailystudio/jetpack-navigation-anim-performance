@@ -26,9 +26,8 @@ class DataListAdapter(
     }
 
     companion object {
-        const val TAG = "DataListAdapter"
-
         private val DIFF_CALLBACK: ItemCallback<ListData> = object: ItemCallback<ListData>() {
+
             override fun areItemsTheSame(oldItem: ListData, newItem: ListData): Boolean {
                 return oldItem.text == newItem.text
             }
