@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        app:key="selectable_background"
+        app:title="@string/settings_selectable_background"/>
+
+    <ListPreference
+        android:key="item_layout"
+        android:title="@string/settings_item_layout"
+        android:summary="Choose a theme for the app"
+        android:defaultValue="simple"
+        android:entries="@array/layouts"
+        android:entryValues="@array/layouts_values"/>
+
+</PreferenceScreen>

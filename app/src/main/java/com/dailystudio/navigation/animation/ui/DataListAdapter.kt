@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dailystudio.navigation.animation.R
-import com.dailystudio.navigation.animation.data.ListData
+import com.dailystudio.navigation.animation.data.Item
 
 class DataListAdapter(
     private val itemLayout: Int = R.layout.layout_list_item_iv_tv_card_sel,
     private val itemSelectableId: Int = R.id.selectable,
-    val onItemClicked: ((ListData) -> Unit)? = null
+    val onItemClicked: ((Item) -> Unit)? = null
 ) :
-    ListAdapter<ListData, DataListAdapter.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<Item, DataListAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     class ViewHolder(
         itemView: View,
@@ -26,13 +26,13 @@ class DataListAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK: ItemCallback<ListData> = object: ItemCallback<ListData>() {
+        private val DIFF_CALLBACK: ItemCallback<Item> = object: ItemCallback<Item>() {
 
-            override fun areItemsTheSame(oldItem: ListData, newItem: ListData): Boolean {
+            override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
                 return oldItem.text == newItem.text
             }
 
-            override fun areContentsTheSame(oldItem: ListData, newItem: ListData): Boolean {
+            override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
                 return oldItem == newItem
             }
 

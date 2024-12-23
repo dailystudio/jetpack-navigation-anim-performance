@@ -16,4 +16,8 @@
         android:id="@+id/secondaryListFragment"
         android:name="com.dailystudio.navigation.animation.fragment.SecondaryListFragment"
         android:label="SecondaryListFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.dailystudio.navigation.animation.fragment.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

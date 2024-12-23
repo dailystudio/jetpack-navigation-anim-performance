@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Navigation Animation</string>
+
+    <string name="title_settings">Settings</string>
+    <string name="menu_item_settings">Settings</string>
+
+    <string name="settings_selectable_background">Use selectable background</string>
+    <string name="settings_item_layout">Item Layout</string>
+
+    <string-array name="layouts">
+        <item>Single TextView</item>
+        <item>ImageView + TextView</item>
+        <item>CardView</item>
+    </string-array>
+
+    <string-array name="layouts_values">
+        <item>simple</item>
+        <item>iv_tv</item>
+        <item>card</item>
+    </string-array>
+
 </resources>
