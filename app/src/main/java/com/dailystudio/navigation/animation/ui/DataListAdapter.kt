@@ -11,7 +11,7 @@ import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.data.ListData
 
 class DataListAdapter(
-    private val itemLayout: Int = R.layout.layout_list_item_iv_tv_card,
+    private val itemLayout: Int = R.layout.layout_list_item_iv_tv_card_sel,
     private val itemSelectableId: Int = R.id.selectable,
     val onItemClicked: ((ListData) -> Unit)? = null
 ) :
