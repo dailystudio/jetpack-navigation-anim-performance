@@ -1,7 +1,6 @@
 package com.dailystudio.navigation.animation.viewmodel
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
