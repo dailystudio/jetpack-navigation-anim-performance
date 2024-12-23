@@ -29,7 +29,14 @@ class SecondaryListFragment: Fragment() {
         val recyclerView: RecyclerView? = view.findViewById(android.R.id.list)
         recyclerView?.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        val listOfData = (1..50).map { ListData(it.toString()) }
+        val listOfData = (1..50).map {
+            ListData(
+                buildString {
+                    append("Item - ")
+                    append(it)
+                }
+            )
+        }
 
         recyclerView?.adapter = DataListAdapter().apply {
             submitList(listOfData)

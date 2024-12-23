@@ -30,7 +30,14 @@ class PrimaryListFragment: Fragment() {
         val recyclerView: RecyclerView? = view.findViewById(android.R.id.list)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-        val listOfData = ('A'..'Z').map { ListData(it.toString()) }
+        val listOfData = ('A'..'Z').map {
+            ListData(
+                buildString {
+                    append("Item - ")
+                    append(it)
+                }
+            )
+        }
 
         recyclerView?.adapter = DataListAdapter(
             onItemClicked = { data ->
