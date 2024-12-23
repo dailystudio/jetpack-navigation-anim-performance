@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navi_main"
+    app:startDestination="@id/primaryListFragment">
+
+    <fragment
+        android:id="@+id/primaryListFragment"
+        android:name="com.dailystudio.navigation.animation.fragment.PrimaryListFragment"
+        android:label="PrimaryListFragment" >
+        <action
+            android:id="@+id/action_primaryListFragment_to_secondaryListFragment"
+            app:destination="@id/secondaryListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondaryListFragment"
+        android:name="com.dailystudio.navigation.animation.fragment.SecondaryListFragment"
+        android:label="SecondaryListFragment" />
+</navigation>
