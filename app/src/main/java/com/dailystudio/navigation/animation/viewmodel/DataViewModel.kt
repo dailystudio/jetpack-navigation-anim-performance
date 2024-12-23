@@ -1,6 +1,8 @@
 package com.dailystudio.navigation.animation.viewmodel
 
 import android.app.Application
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,51 +25,60 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
         const val DEFAULT_LAYOUT = "simple"
 
         private const val TAG = "DataViewModel"
+
+        private const val PREF_SELECTABLE_BACKGROUND = "selectable_background"
+        private const val PREF_ITEM_LAYOUT = "item_layout"
     }
 
-    private val _settings = PreferenceManager.getDefaultSharedPreferences(application)
+    private val _settingsPrefs = PreferenceManager.getDefaultSharedPreferences(application)
+
+    private fun settingOfUseSelectableItemBackground(): Boolean {
+        return _settingsPrefs.getBoolean(PREF_SELECTABLE_BACKGROUND, false)
+    }
+
+    private fun settingOfItemLayout(): String {
+        return _settingsPrefs.getString(PREF_ITEM_LAYOUT, DEFAULT_LAYOUT) ?: DEFAULT_LAYOUT
+    }
+
+    private val _settingsPrefsChangedListener = OnSharedPreferenceChangeListener { _, key ->
+        Log.d("ViewModel", "[AR] Pref[$key] changed")
+        when(key) {
+            "selectable_background" -> {
+                _useSelectableItemBackground.value =
+                    settingOfUseSelectableItemBackground()
+            }
+
+            "item_layout" -> {
+                _layout.value =
+                    settingOfItemLayout()
+            }
+        }
+    }
+
+    init {
+        _settingsPrefs.registerOnSharedPreferenceChangeListener(_settingsPrefsChangedListener)
+    }
 
     private val _useSelectableItemBackground: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
+        MutableStateFlow(settingOfUseSelectableItemBackground())
     private val _layout: MutableStateFlow<String> =
-        MutableStateFlow(DEFAULT_LAYOUT)
+        MutableStateFlow(settingOfItemLayout())
 
     private val itemLayout: StateFlow<ItemLayout> = _layout.combine(_useSelectableItemBackground) { layout, useItemBackground ->
         Log.d(TAG, "[AR] layout: $layout, useItemBackground: $useItemBackground")
-        val layoutId = when(layout) {
-            "simple" -> {
-                if (useItemBackground) {
-                    R.layout.layout_list_item_sel
-                } else {
-                    R.layout.layout_list_item
-                }
-            }
-            "iv_tv" -> {
-                if (useItemBackground) {
-                    R.layout.layout_list_item_iv_tv_sel
-                } else {
-                    R.layout.layout_list_item_iv_tv
-                }
-            }
-            "card" -> {
-                if (useItemBackground) {
-                    R.layout.layout_list_item_iv_tv_card_sel
-                } else {
-                    R.layout.layout_list_item_iv_tv_card
-                }
-            }
-            else -> R.layout.layout_list_item
-        }
 
-        val selectableId = when(layout) {
-            "simple" -> {
-                R.id.text
-            }
-            else -> R.id.selectable
-        }
-
-        ItemLayout(layoutId, selectableId)
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, ItemLayout())
+        ItemLayout(
+            itemLayoutId(layout, useItemBackground),
+            selectableId(layout)
+        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        ItemLayout(
+            itemLayoutId(settingOfItemLayout(), settingOfUseSelectableItemBackground()),
+            selectableId(settingOfItemLayout())
+        )
+    )
 
     val primaryList: Flow<ListData> = flow {
         emit(('A'..'Z').map {
@@ -95,25 +106,47 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
         ListData(list, layout)
     }
 
-    init {
-        _settings.registerOnSharedPreferenceChangeListener { prefs, key ->
-            Log.d("ViewModel", "[AR] Pref[$key] changed")
-            when(key) {
-                "selectable_background" -> {
-                    _useSelectableItemBackground.value =
-                        prefs.getBoolean(key, false)
-                }
-                "item_layout" -> {
-                    _layout.value =
-                        prefs.getString(key, DEFAULT_LAYOUT) ?: DEFAULT_LAYOUT
+
+    private fun selectableId(layout: String): Int {
+        return when(layout) {
+            "simple" -> {
+                R.id.text
+            }
+            else -> R.id.selectable
+        }
+    }
+
+    private fun itemLayoutId(layout: String, useItemBackground: Boolean): Int {
+        return when(layout) {
+            "simple" -> {
+                if (useItemBackground) {
+                    R.layout.layout_list_item_sel
+                } else {
+                    R.layout.layout_list_item
                 }
             }
+            "iv_tv" -> {
+                if (useItemBackground) {
+                    R.layout.layout_list_item_iv_tv_sel
+                } else {
+                    R.layout.layout_list_item_iv_tv
+                }
+            }
+            "card" -> {
+                if (useItemBackground) {
+                    R.layout.layout_list_item_iv_tv_card_sel
+                } else {
+                    R.layout.layout_list_item_iv_tv_card
+                }
+            }
+            else -> R.layout.layout_list_item
         }
     }
 
     override fun onCleared() {
         super.onCleared()
 
-//        _settings.unregisterOnSharedPreferenceChangeListener()
+        _settingsPrefs.unregisterOnSharedPreferenceChangeListener(
+            _settingsPrefsChangedListener)
     }
 }
