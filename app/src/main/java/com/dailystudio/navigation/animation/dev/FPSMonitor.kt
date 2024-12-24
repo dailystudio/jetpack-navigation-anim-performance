@@ -1,7 +1,5 @@
 package com.dailystudio.navigation.animation.dev
 
-import android.util.Log
-
 class FPSMonitor: AbsFrameMonitor() {
 
     private var frameCount = 0L
@@ -10,6 +8,13 @@ class FPSMonitor: AbsFrameMonitor() {
     override fun start() {
         lastTime = System.nanoTime()
         super.start()
+    }
+
+    override fun reset() {
+        super.reset()
+
+        frameCount = 0
+        lastTime = System.nanoTime()
     }
 
     override fun analyzeFrameData(frameTimeNanos: Long): Float? {

@@ -22,6 +22,7 @@ class SecondaryListFragment: AbsListFragment() {
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 performanceViewModel.resetDroppedFrames()
+                performanceViewModel.resetFps()
 
                 findNavController().navigateUp()
             }

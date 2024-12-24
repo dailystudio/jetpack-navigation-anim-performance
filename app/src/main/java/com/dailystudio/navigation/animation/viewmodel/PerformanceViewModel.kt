@@ -22,6 +22,10 @@ class PerformanceViewModel(application: Application): AndroidViewModel(applicati
         droppedMonitor.reset()
     }
 
+    fun resetFps() {
+        fpsMonitor.reset()
+    }
+
     override fun onCleared() {
         super.onCleared()
 

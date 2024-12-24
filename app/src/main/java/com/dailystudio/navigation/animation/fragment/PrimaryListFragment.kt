@@ -34,6 +34,8 @@ class PrimaryListFragment: AbsListFragment() {
         val dir = PrimaryListFragmentDirections.actionPrimaryListFragmentToSecondaryListFragment()
 
         performanceViewModel.resetDroppedFrames()
+        performanceViewModel.resetFps()
+
         findNavController().navigate(dir,
             navOptions = navOptions)
     }

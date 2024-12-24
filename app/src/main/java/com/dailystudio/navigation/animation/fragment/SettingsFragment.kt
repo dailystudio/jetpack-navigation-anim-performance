@@ -18,6 +18,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+
                 findNavController().navigateUp()
                 (requireActivity() as AppCompatActivity)
                     .supportActionBar?.title = getString(R.string.app_name)

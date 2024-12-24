@@ -7,9 +7,8 @@ class DroppedMonitor: AbsFrameMonitor() {
     private var droppedFramesCount: Int = 0
 
     override fun reset() {
-        Log.d("DroppedMonitor", "Dropped reset")
+        super.reset()
         droppedFramesCount = 0
-        Log.d("DroppedMonitor", "droppedFramesCount: $droppedFramesCount")
     }
 
     override fun analyzeFrameData(frameTimeNanos: Long): Float? {
@@ -19,9 +18,7 @@ class DroppedMonitor: AbsFrameMonitor() {
 
             val expectedFrameTimeMillis = 16.67
             if (timeDiffMillis > expectedFrameTimeMillis) {
-                Log.d("DroppedMonitor", "B droppedFramesCount: $droppedFramesCount")
                 droppedFramesCount += ((timeDiffMillis / expectedFrameTimeMillis).toInt() - 1)
-                Log.d("DroppedMonitor", "A droppedFramesCount: $droppedFramesCount")
             }
         }
 
