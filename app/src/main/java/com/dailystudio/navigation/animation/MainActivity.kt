@@ -1,15 +1,30 @@
 package com.dailystudio.navigation.animation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var performanceViewModel: PerformanceViewModel
+
+    private var fpsView: TextView? = null
+    private var droppedView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +36,44 @@ class MainActivity : AppCompatActivity() {
         topBar?.let {
             setSupportActionBar(it)
         }
+
+        performanceViewModel = ViewModelProvider(this)[PerformanceViewModel::class.java]
+
+        setupMonitors()
+
     }
+
+    private fun setupMonitors() {
+        fpsView = findViewById(R.id.fps)
+        droppedView = findViewById(R.id.dropped)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                performanceViewModel.fps.collectLatest {
+                    Log.d("MainActivity", "FPS: $it")
+
+                    fpsView?.text = buildString {
+                        append("FPS: ")
+                        append(it.roundToInt())
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                performanceViewModel.droppedFrames.collectLatest {
+                    Log.d("MainActivity", "Dropped: $it")
+
+                    droppedView?.text = buildString {
+                        append("Dropped: ")
+                        append(it.roundToInt())
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -41,6 +93,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun gotoSettings() {
+        val naviController = findNavController(R.id.nav_host_fragment)
+        if (naviController.currentDestination?.id == R.id.settingsFragment) {
+            return
+        }
         val navOptions = NavOptions.Builder()
             .setEnterAnim(R.anim.slide_in_right)
             .setExitAnim(R.anim.slide_out_left)
@@ -48,7 +104,9 @@ class MainActivity : AppCompatActivity() {
             .setPopExitAnim(R.anim.slide_out_right)
             .build()
 
-        findNavController(R.id.nav_host_fragment).navigate(
+        performanceViewModel.resetDroppedFrames()
+
+        naviController.navigate(
             R.id.settingsFragment, null ,navOptions)
     }
 

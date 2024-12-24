@@ -1,5 +1,6 @@
 package com.dailystudio.navigation.animation.fragment
 
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,9 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.data.Item
 import com.dailystudio.navigation.animation.data.ListData
+import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
 import kotlinx.coroutines.flow.Flow
 
 class PrimaryListFragment: AbsListFragment() {
+
+    private val performanceViewModel: PerformanceViewModel by viewModels({ requireActivity() })
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {
         return LinearLayoutManager(requireContext())
@@ -29,6 +33,7 @@ class PrimaryListFragment: AbsListFragment() {
 
         val dir = PrimaryListFragmentDirections.actionPrimaryListFragmentToSecondaryListFragment()
 
+        performanceViewModel.resetDroppedFrames()
         findNavController().navigate(dir,
             navOptions = navOptions)
     }
