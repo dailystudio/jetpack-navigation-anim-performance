@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Navigation Animation</string>
 
+    <string name="activity_title_main">Navigation</string>
+    <string name="activity_title_main_compose">Navigation Compose</string>
+
     <string name="title_settings">Settings</string>
     <string name="menu_item_settings">Settings</string>
 
@@ -18,5 +21,6 @@
         <item>iv_tv</item>
         <item>card</item>
     </string-array>
+    <string name="title_activity_main2">MainActivity2</string>
 
 </resources>
