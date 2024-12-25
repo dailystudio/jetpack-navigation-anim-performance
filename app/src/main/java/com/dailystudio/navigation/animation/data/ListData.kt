@@ -1,8 +1,8 @@
 package com.dailystudio.navigation.animation.data
 
 class ListData(
-    val items: List<Item>,
-    val itemLayout: ItemLayout
+    val items: List<Item> = emptyList(),
+    val itemLayout: ItemLayout = ItemLayout()
 ) {
     override fun toString(): String {
         return buildString {
