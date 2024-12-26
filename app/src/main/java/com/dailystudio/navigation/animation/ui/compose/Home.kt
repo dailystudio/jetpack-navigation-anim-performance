@@ -1,14 +1,17 @@
 package com.dailystudio.navigation.animation.ui.compose
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
@@ -16,12 +19,18 @@ import androidx.navigation.compose.rememberNavController
 import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.ui.theme.navigationTopAppBarColors
 import androidx.navigation.compose.*
+import com.dailystudio.navigation.animation.data.ListData
+import com.dailystudio.navigation.animation.ui.compose.utils.activityViewModel
+import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home() {
-
     val navController = rememberNavController()
+
+    val viewModel = activityViewModel<DataViewModel>()
+    val primaryData by viewModel.primaryList.collectAsState(ListData())
+    val secondaryData by viewModel.secondaryList.collectAsState(ListData())
 
     Scaffold(
         topBar = {
@@ -38,32 +47,37 @@ fun Home() {
             Column (
                 modifier = Modifier.padding(padding)
             ) {
-                NavHost(navController = navController,
+                NavHost(
+                    modifier = Modifier.fillMaxWidth(),
+                    navController = navController,
                     startDestination = "primary") {
                     composable("primary",
                         enterTransition = { leftInTransition() },
                         exitTransition = { leftOutTransition() },
                     ) {
-                        PrimaryListPage(
+                        AbsDataListPage(
+                            modifier = Modifier,
+                            data = primaryData.items,
                             onItemClick = {
                                 navController.navigate("secondary")
-                            }
-                        ) { item, modifier ->
-                            Box {
-                                Text(text = item.text)
-                            }
+                            },
+                        ) { modifier, item, onItemClick ->
+//                            SimpleItem(modifier, item, onItemClick)
+                            CardItem(modifier, item, onItemClick)
                         }
                     }
                     composable("secondary",
                         enterTransition = { rightInTransition() },
                         exitTransition = { rightOutTransition() },
                     ) {
-                        SecondaryListPage(
+                        AbsDataGridPage(
+                            modifier = Modifier,
+                            data = secondaryData.items,
+                            cells = GridCells.Fixed(2),
                             onItemClick = {}
-                        ) {item, modifier ->
-                            Box {
-                                Text(text = item.text)
-                            }
+                        ) { modifier, item, onItemClick ->
+                            SimpleItem(modifier, item, onItemClick)
+//                            CardItem(modifier, item, onItemClick)
                         }
                     }
                 }

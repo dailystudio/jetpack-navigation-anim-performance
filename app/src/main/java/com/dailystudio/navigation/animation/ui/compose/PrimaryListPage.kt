@@ -13,7 +13,7 @@ import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 fun PrimaryListPage(
     modifier: Modifier = Modifier,
     onItemClick: (item: Item) -> Unit,
-    itemContent: @Composable (item: Item, modifier: Modifier) -> Unit
+    itemContent: ItemComposable
 ) {
     val viewModel = activityViewModel<DataViewModel>()
     val listData by viewModel.primaryList.collectAsState(ListData())

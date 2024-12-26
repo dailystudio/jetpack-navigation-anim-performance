@@ -1,25 +1,22 @@
 package com.dailystudio.navigation.animation.ui.compose
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.dailystudio.navigation.animation.data.Item
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun  AbsDataListPage(
     modifier: Modifier = Modifier,
     data: List<Item>,
     onItemClick: (item: Item) -> Unit,
-    itemContent: @Composable (item: Item, modifier: Modifier) -> Unit
+    itemContent: ItemComposable
 ) {
     val listState = rememberLazyListState()
 
@@ -28,18 +25,28 @@ fun  AbsDataListPage(
         state = listState
     ) {
         items(data) { item ->
-            Box(
-                modifier = modifier
-                    .combinedClickable (
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(),
-                        onClick = {
-                            onItemClick(item)
-                        },
-                    )
-            ) {
-                itemContent(item, Modifier)
-            }
+            itemContent(Modifier, item, onItemClick)
+        }
+    }
+}
+
+@Composable
+fun  AbsDataGridPage(
+    modifier: Modifier = Modifier,
+    cells: GridCells,
+    data: List<Item>,
+    onItemClick: (item: Item) -> Unit,
+    itemContent: ItemComposable
+) {
+    val gridState = rememberLazyGridState()
+
+    LazyVerticalGrid (
+        modifier = modifier,
+        columns = cells,
+        state = gridState
+    ) {
+        items(data) { item ->
+            itemContent(Modifier, item, onItemClick)
         }
     }
 }

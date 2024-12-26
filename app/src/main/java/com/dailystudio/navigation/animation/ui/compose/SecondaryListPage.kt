@@ -1,5 +1,6 @@
 package com.dailystudio.navigation.animation.ui.compose
 
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,13 +15,14 @@ import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 fun SecondaryListPage(
     modifier: Modifier = Modifier,
     onItemClick: (item: Item) -> Unit,
-    itemContent: @Composable (item: Item, modifier: Modifier) -> Unit
+    itemContent: ItemComposable
 ) {
     val viewModel = activityViewModel<DataViewModel>()
     val listData by viewModel.secondaryList.collectAsState(ListData())
 
-    AbsDataListPage(
+    AbsDataGridPage(
         modifier = Modifier,
+        GridCells.Fixed(2),
         listData.items,
         onItemClick,
         itemContent,
