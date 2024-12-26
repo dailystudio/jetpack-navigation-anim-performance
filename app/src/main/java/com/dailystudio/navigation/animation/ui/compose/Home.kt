@@ -58,12 +58,16 @@ fun Home() {
                         AbsDataListPage(
                             modifier = Modifier,
                             data = primaryData.items,
+                            rippleEnabled = primaryData.itemLayout.rippleEnabled,
                             onItemClick = {
                                 navController.navigate("secondary")
                             },
-                        ) { modifier, item, onItemClick ->
-//                            SimpleItem(modifier, item, onItemClick)
-                            CardItem(modifier, item, onItemClick)
+                        ) { modifier, item, rippleEnabled, onItemClick ->
+                            if (primaryData.itemLayout.useCard) {
+                                CardItem(modifier, item, rippleEnabled, onItemClick)
+                            } else {
+                                SimpleItem(modifier, item, rippleEnabled, onItemClick)
+                            }
                         }
                     }
                     composable("secondary",
@@ -72,13 +76,22 @@ fun Home() {
                     ) {
                         AbsDataGridPage(
                             modifier = Modifier,
-                            data = secondaryData.items,
                             cells = GridCells.Fixed(2),
-                            onItemClick = {}
-                        ) { modifier, item, onItemClick ->
-                            SimpleItem(modifier, item, onItemClick)
-//                            CardItem(modifier, item, onItemClick)
+                            data = secondaryData.items,
+                            rippleEnabled = secondaryData.itemLayout.rippleEnabled,
+                            onItemClick = {
+                                navController.navigate("settings")
+
+                            }
+                        ) { modifier, item, rippleEnabled, onItemClick ->
+                            if (primaryData.itemLayout.useCard) {
+                                CardItem(modifier, item, rippleEnabled, onItemClick)
+                            } else {
+                                SimpleItem(modifier, item, rippleEnabled, onItemClick)
+                            }
                         }
+                    }
+                    composable("settings") {
                     }
                 }
             }

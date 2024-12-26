@@ -1,6 +1,7 @@
 package com.dailystudio.navigation.animation.ui.compose
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,11 +12,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -24,25 +30,48 @@ import coil3.compose.rememberAsyncImagePainter
 import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.data.Item
 
-typealias ItemComposable = @Composable (modifier: Modifier, item: Item, onItemClick: ((item: Item) -> Unit)?) -> Unit
+typealias ItemComposable =
+        @Composable (
+            modifier: Modifier,
+            item: Item,
+            rippleEnabled: Boolean,
+            onItemClick: ((item: Item) -> Unit)?
+        ) -> Unit
+
+fun Modifier.bindOnItemClick(
+    item: Item,
+    rippleEnabled: Boolean,
+    onItemClick: ((item: Item) -> Unit)?
+): Modifier = composed {
+    if (onItemClick != null) {
+        if (!rippleEnabled) {
+            this.clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
+            ) {
+                onItemClick(item)
+            }
+        } else {
+            this.clickable {
+                onItemClick(item)
+            }
+        }
+    } else {
+        this
+    }
+}
 
 @Composable
 fun SimpleItem(
     modifier: Modifier = Modifier,
     item: Item,
+    rippleEnabled: Boolean,
     onItemClick: ((item: Item) -> Unit)? = null,
 ) {
     val newModifier = modifier
         .fillMaxWidth()
-        .then(
-            if (onItemClick != null) {
-                Modifier.clickable {
-                    onItemClick.invoke(item)
-                }
-            } else Modifier
-        )
+        .bindOnItemClick(item, rippleEnabled, onItemClick)
         .padding(8.dp)
-
 
     Row(
         modifier = newModifier,
@@ -70,25 +99,13 @@ fun SimpleItem(
 fun CardItem(
     modifier: Modifier = Modifier,
     item: Item,
+    rippleEnabled: Boolean,
     onItemClick: ((item: Item) -> Unit)? = null,
 ) {
-    var newModifier = modifier
+    val newModifier = modifier
         .fillMaxWidth()
         .padding(8.dp)
-        .then(
-            if (onItemClick != null) {
-                Modifier.clickable {
-                    onItemClick.invoke(item)
-                }
-            } else Modifier
-        )
-
-    if (onItemClick != null) {
-        newModifier = newModifier
-            .clickable {
-                onItemClick.invoke(item)
-            }
-    }
+        .bindOnItemClick(item, rippleEnabled, onItemClick)
 
     Card(
         modifier = newModifier,
@@ -100,6 +117,6 @@ fun CardItem(
         ),
         shape = RoundedCornerShape(5.dp) // 设置圆角
     ) {
-        SimpleItem(modifier, item, null)
+        SimpleItem(modifier, item, rippleEnabled, null)
     }
 }

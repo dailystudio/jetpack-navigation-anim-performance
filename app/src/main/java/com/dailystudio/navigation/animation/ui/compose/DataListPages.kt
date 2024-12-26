@@ -15,6 +15,7 @@ import com.dailystudio.navigation.animation.data.Item
 fun  AbsDataListPage(
     modifier: Modifier = Modifier,
     data: List<Item>,
+    rippleEnabled: Boolean,
     onItemClick: (item: Item) -> Unit,
     itemContent: ItemComposable
 ) {
@@ -25,7 +26,7 @@ fun  AbsDataListPage(
         state = listState
     ) {
         items(data) { item ->
-            itemContent(Modifier, item, onItemClick)
+            itemContent(Modifier, item, rippleEnabled, onItemClick)
         }
     }
 }
@@ -35,6 +36,7 @@ fun  AbsDataGridPage(
     modifier: Modifier = Modifier,
     cells: GridCells,
     data: List<Item>,
+    rippleEnabled: Boolean,
     onItemClick: (item: Item) -> Unit,
     itemContent: ItemComposable
 ) {
@@ -46,7 +48,7 @@ fun  AbsDataGridPage(
         state = gridState
     ) {
         items(data) { item ->
-            itemContent(Modifier, item, onItemClick)
+            itemContent(Modifier, item, rippleEnabled, onItemClick)
         }
     }
 }

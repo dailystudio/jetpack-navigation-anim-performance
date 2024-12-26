@@ -68,14 +68,18 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
 
         ItemLayout(
             itemLayoutId(layout, useItemBackground),
-            selectableId(layout)
+            selectableId(layout),
+            rippleEnabled(useItemBackground),
+            useCard(layout)
         )
     }.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         ItemLayout(
             itemLayoutId(settingOfItemLayout(), settingOfUseSelectableItemBackground()),
-            selectableId(settingOfItemLayout())
+            selectableId(settingOfItemLayout()),
+            rippleEnabled(settingOfUseSelectableItemBackground()),
+            useCard(settingOfItemLayout())
         )
     )
 
@@ -139,6 +143,17 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
             else -> R.layout.layout_list_item
+        }
+    }
+
+    private fun rippleEnabled(useItemBackground: Boolean): Boolean {
+        return useItemBackground
+    }
+
+    private fun useCard(layout: String): Boolean {
+        return when(layout) {
+            "simple" -> false
+            else -> true
         }
     }
 
