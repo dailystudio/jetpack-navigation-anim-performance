@@ -10,6 +10,7 @@ import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.data.ItemLayout
 import com.dailystudio.navigation.animation.data.Item
 import com.dailystudio.navigation.animation.data.ListData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,6 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DataViewModel(application: Application): AndroidViewModel(application) {
 
@@ -148,6 +151,17 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
 
     private fun rippleEnabled(useItemBackground: Boolean): Boolean {
         return useItemBackground
+    }
+
+    fun updateRippleEnabled(rippleEnabled: Boolean) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _settingsPrefs.edit().putBoolean(
+                    PREF_SELECTABLE_BACKGROUND,
+                    rippleEnabled
+                ).apply()
+            }
+        }
     }
 
     private fun useCard(layout: String): Boolean {

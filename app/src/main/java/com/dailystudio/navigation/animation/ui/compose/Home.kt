@@ -1,14 +1,12 @@
 package com.dailystudio.navigation.animation.ui.compose
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,13 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.ui.theme.navigationTopAppBarColors
 import androidx.navigation.compose.*
-import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import com.dailystudio.navigation.animation.data.ListData
 import com.dailystudio.navigation.animation.ui.compose.utils.activityViewModel
@@ -47,6 +43,8 @@ fun Home() {
         "settings" -> stringResource(id = R.string.title_settings)
         else -> stringResource(id = R.string.activity_title_main_compose)
     }
+
+    Log.d("Home", "primaryData: $primaryData")
 
     Scaffold(
         topBar = {
@@ -108,10 +106,6 @@ fun Home() {
                             cells = GridCells.Fixed(2),
                             data = secondaryData.items,
                             rippleEnabled = secondaryData.itemLayout.rippleEnabled,
-                            onItemClick = {
-                                navController.navigate("settings")
-
-                            }
                         ) { modifier, item, rippleEnabled, onItemClick ->
                             if (primaryData.itemLayout.useCard) {
                                 CardItem(modifier, item, rippleEnabled, onItemClick)
@@ -124,6 +118,13 @@ fun Home() {
                         enterTransition = { rightInTransition() },
                         exitTransition = { rightOutTransition() }
                     ) {
+                        SettingsPage(
+                            rippleEnabled = primaryData.itemLayout.rippleEnabled,
+                            onRippleEnabledChanged = {
+                                Log.d("HOME", "update ripple: $it")
+                                viewModel.updateRippleEnabled(it)
+                            }
+                        )
                     }
                 }
             }

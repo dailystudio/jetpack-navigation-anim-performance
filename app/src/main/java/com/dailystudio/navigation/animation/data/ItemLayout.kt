@@ -10,6 +10,8 @@ data class ItemLayout(
 ) {
     override fun toString(): String {
         return buildString {
+            append("ripple = ${rippleEnabled}, ")
+            append("card = ${useCard}, ")
             append("layout = ${layoutId}, ")
             append("selectable = $selectableId")
         }

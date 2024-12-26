@@ -8,7 +8,7 @@
     <ListPreference
         android:key="item_layout"
         android:title="@string/settings_item_layout"
-        android:summary="Choose a theme for the app"
+        android:summary="@string/settings_item_layout_desc"
         android:defaultValue="simple"
         android:entries="@array/layouts"
         android:entryValues="@array/layouts_values"/>

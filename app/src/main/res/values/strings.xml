@@ -8,7 +8,8 @@
     <string name="menu_item_settings">Settings</string>
 
     <string name="settings_selectable_background">Use selectable background</string>
-    <string name="settings_item_layout">Item Layout</string>
+    <string name="settings_item_layout">Item layout</string>
+    <string name="settings_item_layout_desc">Choose a layout for list items</string>
 
     <string-array name="layouts">
         <item>Single TextView</item>

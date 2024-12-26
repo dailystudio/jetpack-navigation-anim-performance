@@ -16,7 +16,7 @@ fun  AbsDataListPage(
     modifier: Modifier = Modifier,
     data: List<Item>,
     rippleEnabled: Boolean,
-    onItemClick: (item: Item) -> Unit,
+    onItemClick: ((item: Item) -> Unit)? = null,
     itemContent: ItemComposable
 ) {
     val listState = rememberLazyListState()
@@ -37,7 +37,7 @@ fun  AbsDataGridPage(
     cells: GridCells,
     data: List<Item>,
     rippleEnabled: Boolean,
-    onItemClick: (item: Item) -> Unit,
+    onItemClick: ((item: Item) -> Unit)? = null,
     itemContent: ItemComposable
 ) {
     val gridState = rememberLazyGridState()
