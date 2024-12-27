@@ -1,6 +1,8 @@
 # Jetpack Navigation Animation Performance Issue
 
-This repo is dedicated for the investigation of a performance issue encountered when using Jetpack Navigation animations. The issue manifests as lag during screen transitions and is observed across different layouts and effects. The goal is to analyze the problem, document the application setup, and outline the testing and analysis performed. Hopefully, this project can help relevant personnel address this issue. 
+This repo is dedicated for the investigation of a performance issue encountered when using Jetpack Navigation animations. The issue manifests as lag during screen transitions and is observed across different layouts and effects. The goal is to analyze the problem, document the application setup, and outline the testing and analysis performed. 
+
+Hopefully, this project can help relevant personnel address this issue. 
 
 ## Problem Description
 
@@ -62,7 +64,9 @@ Users can toggle these effects to observe their impact on navigation performance
 
 ## Conclusion
 
-The performance issue is strongly linked to the use of the `ripple` effect in Jetpack Compose and the `selectableItemBackground` in Android View. These effects significantly impact the smoothness of navigation animations, especially on devices with 60Hz displays. Future work may involve:
+The performance issue is strongly linked to the use of the `ripple` effect in Jetpack Compose and the `selectableItemBackground` in Android View. These effects significantly impact the smoothness of navigation animations, especially on devices with 60Hz displays. 
+
+Future work may involve:
 - Exploring alternative implementations of touch feedback effects.
 - Reporting the issue to the Jetpack development team. 
   - Jetpack Compose: [https://issuetracker.google.com/issues/301488789](https://issuetracker.google.com/issues/301488789)
