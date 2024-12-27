@@ -119,9 +119,16 @@ fun Home() {
                     ) {
                         SettingsPage(
                             rippleEnabled = primaryData.itemLayout.rippleEnabled,
+                            useCard = primaryData.itemLayout.useCard,
                             onRippleEnabledChanged = {
                                 Log.d("HOME", "update ripple: $it")
                                 viewModel.updateRippleEnabled(it)
+                            },
+                            onUseCardChanged = {
+                                Log.d("HOME", "update card: $it")
+                                viewModel.updateItemLayout(
+                                    if (it) DataViewModel.LAYOUT_CARD else DataViewModel.LAYOUT_IV_TV
+                                )
                             }
                         )
                     }

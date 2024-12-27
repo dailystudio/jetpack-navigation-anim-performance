@@ -30,6 +30,10 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
 
         private const val PREF_SELECTABLE_BACKGROUND = "selectable_background"
         private const val PREF_ITEM_LAYOUT = "item_layout"
+
+        const val LAYOUT_SIMPLE = "simple"
+        const val LAYOUT_IV_TV = "iv_tv"
+        const val LAYOUT_CARD = "card"
     }
 
     private val _settingsPrefs = PreferenceManager.getDefaultSharedPreferences(application)
@@ -115,7 +119,7 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
 
     private fun selectableId(layout: String): Int {
         return when(layout) {
-            "simple" -> {
+            LAYOUT_SIMPLE -> {
                 R.id.text
             }
             else -> R.id.selectable
@@ -124,21 +128,21 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
 
     private fun itemLayoutId(layout: String, useItemBackground: Boolean): Int {
         return when(layout) {
-            "simple" -> {
+            LAYOUT_SIMPLE -> {
                 if (useItemBackground) {
                     R.layout.layout_list_item_sel
                 } else {
                     R.layout.layout_list_item
                 }
             }
-            "iv_tv" -> {
+            LAYOUT_IV_TV -> {
                 if (useItemBackground) {
                     R.layout.layout_list_item_iv_tv_sel
                 } else {
                     R.layout.layout_list_item_iv_tv
                 }
             }
-            "card" -> {
+            LAYOUT_CARD -> {
                 if (useItemBackground) {
                     R.layout.layout_list_item_iv_tv_card_sel
                 } else {
@@ -153,6 +157,24 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
         return useItemBackground
     }
 
+    private fun useCard(layout: String): Boolean {
+        return when(layout) {
+            LAYOUT_CARD -> true
+            else -> false
+        }
+    }
+
+    fun updateItemLayout(layout: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _settingsPrefs.edit().putString(
+                    PREF_ITEM_LAYOUT,
+                    layout
+                ).apply()
+            }
+        }
+    }
+
     fun updateRippleEnabled(rippleEnabled: Boolean) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -161,13 +183,6 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
                     rippleEnabled
                 ).apply()
             }
-        }
-    }
-
-    private fun useCard(layout: String): Boolean {
-        return when(layout) {
-            "simple" -> false
-            else -> true
         }
     }
 

@@ -11,10 +11,16 @@
     <string name="settings_item_layout">Item layout</string>
     <string name="settings_item_layout_desc">Choose a layout for list items</string>
 
+    <string name="layout_option_simple">Single TextView</string>
+    <string name="layout_option_iv_tv">ImageView + TextView</string>
+    <string name="layout_option_iv_tv_compose">Icon + Text</string>
+    <string name="layout_option_card">CardView</string>
+    <string name="layout_option_card_compose">Card</string>
+
     <string-array name="layouts">
-        <item>Single TextView</item>
-        <item>ImageView + TextView</item>
-        <item>CardView</item>
+        <item>@string/layout_option_simple</item>
+        <item>@string/layout_option_iv_tv</item>
+        <item>@string/layout_option_card</item>
     </string-array>
 
     <string-array name="layouts_values">
