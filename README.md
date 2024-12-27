@@ -36,8 +36,8 @@ Users can toggle these effects to observe their impact on navigation performance
 
 ## Devices Tested:
 1. OnePlus 9 (OxygenOS 14, 60Hz)
-2. OnePlus Ace2 Pro (ColorOS 14, 120Hz)
-3. Pixel 9 Pro XL (Android 15, 120Hz)
+2. OnePlus Ace2 Pro (ColorOS 14, 60 / 120Hz)
+3. Pixel 9 Pro XL (Android 15, 60 / 120Hz)
 
 ## Analysis
 
@@ -45,7 +45,7 @@ Users can toggle these effects to observe their impact on navigation performance
     - The `ripple` effect and `selectableItemBackground` are primary contributors to the lag. Removing these effects eliminates the lag, confirming their role in the issue.
 
 2. **Impact of Layout Complexity:**
-    - Simplifying the layout of list items does not resolve the issue. Even the simplest layouts with a single `TextView` exhibit the lag when the `ripple` effect or `selectableItemBackground` is enabled.
+    - Simplifying the layout of list items does not resolve the issue. Even the simplest layouts with a single `TextView` exhibit the lag when the effect is enabled.
 
 3. **Device Variations:**
     - Devices with 120Hz displays mitigate the perception of lag due to the higher refresh rate. However, the issue is still present and measurable on these devices.
@@ -60,7 +60,8 @@ Users can toggle these effects to observe their impact on navigation performance
 
 The performance issue is strongly linked to the use of the `ripple` effect in Jetpack Compose and the `selectableItemBackground` in Android View. These effects significantly impact the smoothness of navigation animations, especially on devices with 60Hz displays. Future work may involve:
 - Exploring alternative implementations of touch feedback effects.
-- Reporting the issue to the Jetpack development team.
+- Reporting the issue to the Jetpack development team. 
+  - Jetpack Compose: [https://issuetracker.google.com/issues/301488789](https://issuetracker.google.com/issues/301488789)
 - Experimenting with newer library versions as they become available.
 
 This investigation highlights the need for careful consideration of UI effects and their impact on performance, particularly in applications targeting a wide range of devices.
