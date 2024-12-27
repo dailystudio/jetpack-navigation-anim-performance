@@ -44,8 +44,6 @@ fun Home() {
         else -> stringResource(id = R.string.activity_title_main_compose)
     }
 
-    Log.d("Home", "primaryData: $primaryData")
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -106,6 +104,7 @@ fun Home() {
                             cells = GridCells.Fixed(2),
                             data = secondaryData.items,
                             rippleEnabled = secondaryData.itemLayout.rippleEnabled,
+                            {}
                         ) { modifier, item, rippleEnabled, onItemClick ->
                             if (primaryData.itemLayout.useCard) {
                                 CardItem(modifier, item, rippleEnabled, onItemClick)
