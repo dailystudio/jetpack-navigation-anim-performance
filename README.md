@@ -1,6 +1,6 @@
-# Investigation of Jetpack Navigation Animation Performance Issue
+# Jetpack Navigation Animation Performance Issue
 
-This document details the investigation of a performance issue encountered when using Jetpack Navigation animations. The issue manifests as lag during screen transitions and is observed across different layouts and effects. The goal is to analyze the problem, document the application setup, and outline the testing and analysis performed.
+This repo is dedicated for the investigation of a performance issue encountered when using Jetpack Navigation animations. The issue manifests as lag during screen transitions and is observed across different layouts and effects. The goal is to analyze the problem, document the application setup, and outline the testing and analysis performed.
 
 ## Problem Description
 
