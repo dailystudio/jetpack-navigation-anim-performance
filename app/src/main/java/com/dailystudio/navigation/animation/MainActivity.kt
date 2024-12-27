@@ -53,23 +53,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MainActivity", "FPS: $fps")
 
                     fpsView?.text = buildString {
-                        append("FPS: ")
-                        append(fps.value.roundToInt())
-
-                        val min = if (fps.minValue == Float.MAX_VALUE) {
-                            0
-                        } else {
-                            fps.minValue.roundToInt()
-                        }
-                        val max = if (fps.maxValue == Float.MIN_VALUE) {
-                            0
-                        } else {
-                            fps.maxValue.roundToInt()
-                        }
-
-                        append(" [")
-                        append("$min - $max")
-                        append("]")
+                        append(getString(R.string.label_fps))
+                        append(": ")
+                        append(fps)
                     }
                 }
             }
@@ -81,23 +67,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MainActivity", "Dropped: $dropped")
 
                     droppedView?.text = buildString {
-                        append("Dropped: ")
-                        append(dropped.value.roundToInt())
-
-                        val min = if (dropped.minValue == Float.MAX_VALUE) {
-                            0
-                        } else {
-                            dropped.minValue.roundToInt()
-                        }
-                        val max = if (dropped.maxValue == Float.MIN_VALUE) {
-                            0
-                        } else {
-                            dropped.maxValue.roundToInt()
-                        }
-
-                        append(" [")
-                        append("$min - $max")
-                        append("]")
+                        append(getString(R.string.label_dropped))
+                        append(": ")
+                        append(dropped)
                     }
                 }
             }

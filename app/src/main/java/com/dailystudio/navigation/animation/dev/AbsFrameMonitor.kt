@@ -11,12 +11,34 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
+import kotlin.math.roundToInt
 
 data class FrameData(
     val value: Float = 0f,
     val minValue: Float = Float.MAX_VALUE,
     val maxValue: Float = Float.MIN_VALUE,
-)
+) {
+    override fun toString(): String {
+        return buildString {
+            append(value.roundToInt())
+
+            val min = if (minValue == Float.MAX_VALUE) {
+                0
+            } else {
+                minValue.roundToInt()
+            }
+            val max = if (maxValue == Float.MIN_VALUE) {
+                0
+            } else {
+                maxValue.roundToInt()
+            }
+
+            append(" [")
+            append("$min - $max")
+            append("]")
+        }
+    }
+}
 
 abstract class AbsFrameMonitor() {
 
