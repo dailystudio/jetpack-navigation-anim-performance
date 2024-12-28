@@ -113,4 +113,11 @@ class MainActivity : AppCompatActivity() {
             R.id.settingsFragment, null ,navOptions)
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        performanceViewModel.resetFps()
+        performanceViewModel.resetDroppedFrames()
+    }
+
 }
