@@ -3,11 +3,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primaryColor">#498fbd</color>
-    <color name="primaryLightColor">#80498fbd</color>
+    <color name="primaryColor">#498FBD</color>
+    <color name="primaryColorCompose">#DC6A3D</color>
+    <color name="primaryLightColor">#80498FBD</color>
+    <color name="primaryLightColorCompose">#80DC6A3D</color>
     <color name="primaryDarkColor">@color/primaryColor</color>
     <color name="secondaryColor">@color/primaryColor</color>
+    <color name="secondaryColorCompose">@color/primaryColorCompose</color>
     <color name="secondaryLightColor">@color/primaryColor</color>
+    <color name="secondaryLightColorCompose">@color/primaryColorCompose</color>
     <color name="secondaryDarkColor">@color/primaryColor</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>

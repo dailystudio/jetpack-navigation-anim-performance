@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -140,7 +142,7 @@ fun ItemLayoutSettingsDialog(
                                     onClick = { onItemSelected(text.first) },
                                     role = Role.RadioButton
                                 )
-                                .padding(horizontal = 16.dp),
+                                .padding(horizontal = 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
@@ -149,14 +151,19 @@ fun ItemLayoutSettingsDialog(
                             )
                             Text(
                                 text = text.second,
-                                fontSize = 22.sp,
+                                fontSize = 18.sp,
                                 modifier = Modifier.padding(start = 16.dp)
                             )
                         }
                     }
                 }
             },
-            confirmButton = {}
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { onDismiss() }) {
+                    Text( text = stringResource(android.R.string.cancel) )
+                }
+            }
         )
     }
 }
