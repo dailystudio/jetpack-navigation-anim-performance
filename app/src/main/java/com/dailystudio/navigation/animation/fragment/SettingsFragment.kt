@@ -3,12 +3,18 @@ package com.dailystudio.navigation.animation.fragment
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
 import com.dailystudio.navigation.animation.R
+import com.dailystudio.navigation.animation.launchOrDelay
+import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
+    private val viewModel: DataViewModel by viewModels( { requireActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,10 +24,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
-                findNavController().navigateUp()
-                (requireActivity() as AppCompatActivity)
-                    .supportActionBar?.title = getString(R.string.app_name)
+                launchOrDelay(
+                    lifecycleScope = lifecycleScope,
+                    delayMillis = viewModel.settingsOfClickDelay(),
+                ) {
+                    findNavController().navigateUp()
+                    (requireActivity() as AppCompatActivity)
+                        .supportActionBar?.title = getString(R.string.app_name)
+                }
             }
         }
 

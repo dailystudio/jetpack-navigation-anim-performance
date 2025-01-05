@@ -7,22 +7,23 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.preference.PreferenceManager
+import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var performanceViewModel: PerformanceViewModel
+    private val performanceViewModel: PerformanceViewModel by viewModels()
+    private val viewModel: DataViewModel by viewModels()
 
     private var fpsView: TextView? = null
     private var droppedView: TextView? = null
@@ -38,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         topBar?.let {
             setSupportActionBar(it)
         }
-
-        performanceViewModel = ViewModelProvider(this)[PerformanceViewModel::class.java]
 
         setupMonitors()
     }
@@ -107,7 +106,12 @@ class MainActivity : AppCompatActivity() {
         // Handle item selection.
         return when (item.itemId) {
             R.id.action_settings -> {
-                gotoSettings()
+                launchOrDelay(
+                    lifecycleScope = lifecycleScope,
+                    delayMillis = viewModel.settingsOfClickDelay(),
+                ) {
+                    gotoSettings()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -1,6 +1,7 @@
 package com.dailystudio.navigation.animation.fragment
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.data.Item
 import com.dailystudio.navigation.animation.data.ListData
+import com.dailystudio.navigation.animation.launchOrDelay
+import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class PrimaryListFragment: AbsListFragment() {
 
@@ -36,8 +41,15 @@ class PrimaryListFragment: AbsListFragment() {
         performanceViewModel.resetDroppedFrames()
         performanceViewModel.resetFps()
 
-        findNavController().navigate(dir,
-            navOptions = navOptions)
+        launchOrDelay(
+            lifecycleScope = lifecycleScope,
+            delayMillis = viewModel.settingsOfClickDelay(),
+        ){
+
+            findNavController().navigate(dir,
+                navOptions = navOptions)
+        }
+
     }
 
 }

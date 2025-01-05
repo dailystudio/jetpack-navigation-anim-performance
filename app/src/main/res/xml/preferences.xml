@@ -17,4 +17,13 @@
         app:key="debug_frames"
         app:title="@string/settings_debug_frames"/>
 
+    <SeekBarPreference
+        android:key="click_delay"
+        android:title="@string/settings_click_delay"
+        android:summary="@string/settings_click_delay_desc"
+        android:defaultValue="0"
+        app:showSeekBarValue="true"
+        app:min="0"
+        android:max="225" />
+
 </PreferenceScreen>

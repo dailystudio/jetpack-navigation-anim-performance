@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dailystudio.navigation.animation.R
 import com.dailystudio.navigation.animation.data.Item
 import com.dailystudio.navigation.animation.data.ListData
+import com.dailystudio.navigation.animation.launchOrDelay
 import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -24,7 +27,12 @@ class SecondaryListFragment: AbsListFragment() {
                 performanceViewModel.resetDroppedFrames()
                 performanceViewModel.resetFps()
 
-                findNavController().navigateUp()
+                launchOrDelay(
+                    lifecycleScope = lifecycleScope,
+                    delayMillis = viewModel.settingsOfClickDelay(),
+                ) {
+                    findNavController().navigateUp()
+                }
             }
         }
 

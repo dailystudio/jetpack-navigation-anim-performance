@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -38,15 +40,18 @@ fun SettingsPage(
     rippleEnabled: Boolean,
     useCard: Boolean,
     debugFrames: Boolean,
+    clickDelay: Long,
     onRippleEnabledChanged: (newValue: Boolean) -> Unit = {},
     onUseCardChanged: (newValue: Boolean) -> Unit = {},
     onDebugFramesChanged: (newValue: Boolean) -> Unit = {},
+    onClickDelayChanged: (newValue: Long) -> Unit = {},
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
     Log.d("SettingsPage", "ripple enabled: $rippleEnabled")
     Log.d("SettingsPage", "use card: $useCard")
     Log.d("SettingsPage", "debug frames: $debugFrames")
+    Log.d("SettingsPage", "click delay: $clickDelay")
 
     Column {
         Row(
@@ -116,6 +121,48 @@ fun SettingsPage(
                 null,
                 Modifier.weight(1f)
             )
+        }
+
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(Modifier.weight(1f))
+
+            Column (
+                Modifier.weight(5f)
+            ){
+                Text(
+                    text = stringResource(R.string.settings_click_delay),
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Text(
+                    text = stringResource(R.string.settings_click_delay_desc)
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Slider(
+                        modifier = Modifier.weight(1f),
+                        value = clickDelay.toFloat(),
+                        onValueChange = { newValue ->
+                            onClickDelayChanged(newValue.toLong())
+                        },
+                        valueRange = 0f..225f,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        modifier = Modifier.width(32.dp),
+                        text = clickDelay.toString()
+                    )
+                }
+
+            }
         }
     }
 

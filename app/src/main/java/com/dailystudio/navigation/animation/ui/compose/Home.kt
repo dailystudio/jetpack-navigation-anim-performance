@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.dailystudio.navigation.animation.R
@@ -32,6 +34,7 @@ import androidx.navigation.compose.*
 import coil3.compose.rememberAsyncImagePainter
 import com.dailystudio.navigation.animation.data.ListData
 import com.dailystudio.navigation.animation.dev.FrameData
+import com.dailystudio.navigation.animation.launchOrDelay
 import com.dailystudio.navigation.animation.ui.compose.utils.activityViewModel
 import com.dailystudio.navigation.animation.viewmodel.DataViewModel
 import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
@@ -46,6 +49,7 @@ fun Home() {
 
     val primaryData by viewModel.primaryList.collectAsState(ListData())
     val secondaryData by viewModel.secondaryList.collectAsState(ListData())
+    val clickDelay by viewModel.clickDelay.collectAsState(viewModel.settingsOfClickDelay())
 
     val fps by performanceViewModel.fps.collectAsState(FrameData())
     val dropped by performanceViewModel.droppedFrames.collectAsState(FrameData())
@@ -56,6 +60,8 @@ fun Home() {
         "settings" -> stringResource(id = R.string.title_settings)
         else -> stringResource(id = R.string.activity_title_main_compose)
     }
+
+    val lifecycleScope = LocalLifecycleOwner.current.lifecycleScope
 
     Scaffold(
         topBar = {
@@ -70,7 +76,11 @@ fun Home() {
                             performanceViewModel.resetFps()
                             performanceViewModel.resetDroppedFrames()
 
-                            navController.navigate("settings")
+                            launchOrDelay(
+                                lifecycleScope = lifecycleScope,
+                                delayMillis = viewModel.settingsOfClickDelay()) {
+                                navController.navigate("settings")
+                            }
                         }) {
                             Icon(
                                 painter = rememberAsyncImagePainter(R.drawable.ic_settings),
@@ -113,7 +123,11 @@ fun Home() {
                                     performanceViewModel.resetFps()
                                     performanceViewModel.resetDroppedFrames()
 
-                                    navController.navigate("secondary")
+                                    launchOrDelay(
+                                        lifecycleScope = lifecycleScope,
+                                        delayMillis = viewModel.settingsOfClickDelay()) {
+                                        navController.navigate("secondary")
+                                    }
                                 },
                             ) { modifier, item, rippleEnabled, onItemClick ->
                                 if (primaryData.itemLayout.useCard) {
@@ -135,7 +149,11 @@ fun Home() {
                                 performanceViewModel.resetFps()
                                 performanceViewModel.resetDroppedFrames()
 
-                                navController.navigateUp()
+                                launchOrDelay(
+                                    lifecycleScope = lifecycleScope,
+                                    delayMillis = viewModel.settingsOfClickDelay()) {
+                                    navController.navigateUp()
+                                }
                             }
 
                             AbsDataGridPage(
@@ -162,13 +180,18 @@ fun Home() {
                                 performanceViewModel.resetFps()
                                 performanceViewModel.resetDroppedFrames()
 
-                                navController.navigateUp()
+                                launchOrDelay(
+                                    lifecycleScope = lifecycleScope,
+                                    delayMillis = viewModel.settingsOfClickDelay()) {
+                                    navController.navigateUp()
+                                }
                             }
 
                             SettingsPage(
                                 rippleEnabled = primaryData.itemLayout.rippleEnabled,
                                 useCard = primaryData.itemLayout.useCard,
                                 debugFrames = debugFrames,
+                                clickDelay = clickDelay,
                                 onRippleEnabledChanged = {
                                     Log.d("HOME", "update ripple: $it")
                                     viewModel.updateRippleEnabled(it)
@@ -182,6 +205,10 @@ fun Home() {
                                 onDebugFramesChanged = {
                                     Log.d("HOME", "update debug frames: $it")
                                     performanceViewModel.updateDebugFrames(it)
+                                },
+                                onClickDelayChanged = {
+                                    Log.d("HOME", "update click delay: $it")
+                                    viewModel.updateClickDelay(it)
                                 }
                             )
                         }

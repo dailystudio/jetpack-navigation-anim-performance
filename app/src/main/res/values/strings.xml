@@ -14,6 +14,8 @@
     <string name="settings_item_layout">Item layout</string>
     <string name="settings_item_layout_desc">Choose a layout for list items</string>
     <string name="settings_debug_frames">Show frames details</string>
+    <string name="settings_click_delay">Click delay (ms)</string>
+    <string name="settings_click_delay_desc">Click action will start after this delay</string>
 
     <string name="layout_option_simple">Single TextView</string>
     <string name="layout_option_iv_tv">ImageView + TextView</string>

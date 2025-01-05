@@ -59,6 +59,7 @@ class PerformanceViewModel(application: Application): AndroidViewModel(applicati
     init {
         _settingsPrefs.registerOnSharedPreferenceChangeListener(_settingsPrefsChangedListener)
     }
+
     fun resetDroppedFrames() {
         droppedMonitor.reset()
     }
