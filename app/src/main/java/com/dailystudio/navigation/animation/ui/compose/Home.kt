@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.dailystudio.navigation.animation.R
@@ -48,6 +47,7 @@ fun Home() {
 
     val fps by performanceViewModel.fps.collectAsState(FrameData())
     val dropped by performanceViewModel.droppedFrames.collectAsState(FrameData())
+    val debugFrames by performanceViewModel.debugFrames.collectAsState(false)
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val title = when (currentBackStackEntry?.destination?.route) {
@@ -164,6 +164,7 @@ fun Home() {
                             SettingsPage(
                                 rippleEnabled = primaryData.itemLayout.rippleEnabled,
                                 useCard = primaryData.itemLayout.useCard,
+                                debugFrames = debugFrames,
                                 onRippleEnabledChanged = {
                                     Log.d("HOME", "update ripple: $it")
                                     viewModel.updateRippleEnabled(it)
@@ -173,19 +174,25 @@ fun Home() {
                                     viewModel.updateItemLayout(
                                         if (it) DataViewModel.LAYOUT_CARD else DataViewModel.LAYOUT_IV_TV
                                     )
+                                },
+                                onDebugFramesChanged = {
+                                    Log.d("HOME", "update debug frames: $it")
+                                    performanceViewModel.updateDebugFrames(it)
                                 }
                             )
                         }
                     }
                 }
 
-                FramesMonitors(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth(),
-                    fps = fps,
-                    dropped = dropped
-                )
+                if (debugFrames) {
+                    FramesMonitors(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth(),
+                        fps = fps,
+                        dropped = dropped
+                    )
+                }
             }
         },
 

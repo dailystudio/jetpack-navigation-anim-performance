@@ -37,13 +37,17 @@ fun SettingsPage(
     modifier: Modifier = Modifier,
     rippleEnabled: Boolean,
     useCard: Boolean,
+    debugFrames: Boolean,
     onRippleEnabledChanged: (newValue: Boolean) -> Unit = {},
     onUseCardChanged: (newValue: Boolean) -> Unit = {},
+    onDebugFramesChanged: (newValue: Boolean) -> Unit = {},
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
     Log.d("SettingsPage", "ripple enabled: $rippleEnabled")
     Log.d("SettingsPage", "use card: $useCard")
+    Log.d("SettingsPage", "debug frames: $debugFrames")
+
     Column {
         Row(
             modifier = Modifier
@@ -89,6 +93,29 @@ fun SettingsPage(
                     text = stringResource(R.string.settings_item_layout_desc)
                 )
             }
+        }
+
+        Row(
+            modifier = Modifier
+                .height(64.dp)
+                .clickable {
+                    onDebugFramesChanged(!debugFrames)
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(Modifier.weight(1f))
+
+            Text(
+                text = stringResource(R.string.settings_debug_frames),
+                Modifier.weight(4f),
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Switch(
+                debugFrames,
+                null,
+                Modifier.weight(1f)
+            )
         }
     }
 

@@ -39,6 +39,7 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
+        android:id="@+id/frames_details"
         android:orientation="horizontal"
         android:background="#80000000"
         android:padding="8dp"

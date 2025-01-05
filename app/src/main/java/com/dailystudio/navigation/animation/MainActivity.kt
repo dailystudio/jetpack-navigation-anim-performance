@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,10 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.dailystudio.navigation.animation.viewmodel.PerformanceViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private var fpsView: TextView? = null
     private var droppedView: TextView? = null
+    private var framesDetail: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +42,21 @@ class MainActivity : AppCompatActivity() {
         performanceViewModel = ViewModelProvider(this)[PerformanceViewModel::class.java]
 
         setupMonitors()
-
     }
 
     private fun setupMonitors() {
         fpsView = findViewById(R.id.fps)
         droppedView = findViewById(R.id.dropped)
+        framesDetail = findViewById(R.id.frames_details)
+
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                performanceViewModel.debugFrames.collectLatest {
+                    enableFramesDetails(it)
+                }
+            }
+        }
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -74,6 +85,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun enableFramesDetails(enable: Boolean) {
+        framesDetail?.visibility = if (enable) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
     }
 
 

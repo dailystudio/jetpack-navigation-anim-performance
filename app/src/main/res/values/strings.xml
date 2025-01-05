@@ -13,6 +13,7 @@
     <string name="settings_selectable_background">Use selectable background</string>
     <string name="settings_item_layout">Item layout</string>
     <string name="settings_item_layout_desc">Choose a layout for list items</string>
+    <string name="settings_debug_frames">Show frames details</string>
 
     <string name="layout_option_simple">Single TextView</string>
     <string name="layout_option_iv_tv">ImageView + TextView</string>

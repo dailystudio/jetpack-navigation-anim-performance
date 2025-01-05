@@ -13,4 +13,8 @@
         android:entries="@array/layouts"
         android:entryValues="@array/layouts_values"/>
 
+    <SwitchPreferenceCompat
+        app:key="debug_frames"
+        app:title="@string/settings_debug_frames"/>
+
 </PreferenceScreen>

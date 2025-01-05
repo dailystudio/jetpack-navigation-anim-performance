@@ -47,7 +47,7 @@ class DataViewModel(application: Application): AndroidViewModel(application) {
     }
 
     private val _settingsPrefsChangedListener = OnSharedPreferenceChangeListener { _, key ->
-        Log.d("ViewModel", "[AR] Pref[$key] changed")
+        Log.d(TAG, "[${this@DataViewModel}] Pref[$key] changed")
         when(key) {
             "selectable_background" -> {
                 _useSelectableItemBackground.value =
