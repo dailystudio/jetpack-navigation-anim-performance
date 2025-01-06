@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -54,6 +55,9 @@ abstract class AbsListFragment: Fragment() {
 
         recyclerView = view.findViewById(android.R.id.list)
         recyclerView?.layoutManager = getLayoutManager()
+
+        (requireActivity() as AppCompatActivity)
+            .supportActionBar?.title = getString(R.string.app_name)
     }
 
     protected open fun bindListData(listData: ListData) {

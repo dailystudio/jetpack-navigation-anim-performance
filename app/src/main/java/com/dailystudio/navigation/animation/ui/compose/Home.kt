@@ -58,10 +58,22 @@ fun Home() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val title = when (currentBackStackEntry?.destination?.route) {
         "settings" -> stringResource(id = R.string.title_settings)
-        else -> stringResource(id = R.string.activity_title_main_compose)
+        else -> stringResource(id = R.string.app_name)
     }
 
     val lifecycleScope = LocalLifecycleOwner.current.lifecycleScope
+
+    val navigate: (block: () -> Unit) -> Unit = { block ->
+        performanceViewModel.resetFps()
+        performanceViewModel.resetDroppedFrames()
+
+        launchOrDelay(
+            lifecycleScope = lifecycleScope,
+            delayMillis = viewModel.settingsOfClickDelay()) {
+
+            block()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -73,12 +85,7 @@ fun Home() {
                 actions = {
                     Box {
                         IconButton(onClick = {
-                            performanceViewModel.resetFps()
-                            performanceViewModel.resetDroppedFrames()
-
-                            launchOrDelay(
-                                lifecycleScope = lifecycleScope,
-                                delayMillis = viewModel.settingsOfClickDelay()) {
+                            navigate {
                                 navController.navigate("settings")
                             }
                         }) {
@@ -120,12 +127,7 @@ fun Home() {
                                 data = primaryData.items,
                                 rippleEnabled = primaryData.itemLayout.rippleEnabled,
                                 onItemClick = {
-                                    performanceViewModel.resetFps()
-                                    performanceViewModel.resetDroppedFrames()
-
-                                    launchOrDelay(
-                                        lifecycleScope = lifecycleScope,
-                                        delayMillis = viewModel.settingsOfClickDelay()) {
+                                    navigate {
                                         navController.navigate("secondary")
                                     }
                                 },
@@ -146,12 +148,7 @@ fun Home() {
                             BackHandler {
                                 Log.d("BackHandler", "[Secondary] Back pressed intercepted")
 
-                                performanceViewModel.resetFps()
-                                performanceViewModel.resetDroppedFrames()
-
-                                launchOrDelay(
-                                    lifecycleScope = lifecycleScope,
-                                    delayMillis = viewModel.settingsOfClickDelay()) {
+                                navigate {
                                     navController.navigateUp()
                                 }
                             }
@@ -177,12 +174,7 @@ fun Home() {
                             BackHandler {
                                 Log.d("BackHandler", "[Secondary] Back pressed intercepted")
 
-                                performanceViewModel.resetFps()
-                                performanceViewModel.resetDroppedFrames()
-
-                                launchOrDelay(
-                                    lifecycleScope = lifecycleScope,
-                                    delayMillis = viewModel.settingsOfClickDelay()) {
+                                navigate {
                                     navController.navigateUp()
                                 }
                             }

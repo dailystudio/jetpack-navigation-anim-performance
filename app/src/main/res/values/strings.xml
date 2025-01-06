@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Navigation Animation</string>
 
-    <string name="activity_title_main">Navigation</string>
+    <string name="activity_title_main">Navigation Views</string>
     <string name="activity_title_main_compose">Navigation Compose</string>
 
     <string name="label_fps">FPS</string>
