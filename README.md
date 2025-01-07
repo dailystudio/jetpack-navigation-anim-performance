@@ -9,8 +9,19 @@ Hopefully, this project can help relevant personnel address this issue.
 The core issue is that when using the Jetpack Navigation library, if animations are enabled during screen transitions, the interface experiences noticeable lag regardless of whether traditional Android Views or Jetpack Compose are used. This lag occurs as long as the UI elements include click feedback backgrounds. 
 
 This interactive background refers to: 
+
 - Android Views: `selectableItemBackground`
 - Compose: `ripple` effect.
+
+This primarily concerns the interactive effects, such as `ripple` or `selectableItemBackground`, on **60Hz** displays. The lag becomes particularly evident near the end of the transition.
+
+The follow video demonstrates the page transition lag experienced when using Jetpack Navigation with animations. It was tested on a **Google Pixel 9 Pro XL** with a **60Hz** display.
+
+[![](.github/performance_issue_video.png)](https://youtu.be/rLJRexmifAc)
+
+If the lag isn't noticeable, you may refer to the slow-motion version for clarity:
+[![](.github/performance_issue_video_slow_version.png)](https://youtu.be/btpUfGNARKMc)
+
 
 ## Application Features
 
@@ -27,6 +38,7 @@ The application demonstrates a transition between two screens, each containing a
 2. A `Card` wrapping `Text`
 
 By default, each list item includes:
+
 - `ripple` effect (Compose)
 - `selectableItemBackground` (Android View + XML)
 
@@ -37,30 +49,42 @@ Users can toggle these effects to observe their impact on navigation performance
 1. Navigate between two screens containing lists of items.
 2. Test with default settings (`ripple` or `selectableItemBackground` enabled).
 3. Disable `ripple` or `selectableItemBackground` and repeat the tests.
-4. Compare performance on 60Hz and 120Hz display devices.
-5. Test in both debug and release builds with R8 enabled.
+4. Compare performance on **60Hz** and **120Hz** display devices.
+5. Test in both *debug* and *release* builds with R8 enabled.
 
 ## Devices Tested:
 1. OnePlus 9 (OxygenOS 14, 60Hz)
 2. OnePlus Ace2 Pro (ColorOS 14, 60 / 120Hz)
-3. Pixel 9 Pro XL (Android 15, 60 / 120Hz)
+3. Google Pixel 9 Pro XL (Android 15, 60 / 120Hz)
 
 ## Analysis
 
 1. **Effect of UI Elements:**
     - The `ripple` effect and `selectableItemBackground` are primary contributors to the lag. Removing these effects eliminates the lag, confirming their role in the issue.
 
-2. **Impact of Layout Complexity:**
-    - Simplifying the layout of list items does not resolve the issue. Even the simplest layouts with a single `TextView` exhibit the lag when the effect is enabled.
+> SOLVE THE PROBLEM
 
-3. **Device Variations:**
+2. **Device Variations:**
     - Devices with 120Hz displays mitigate the perception of lag due to the higher refresh rate. However, the issue is still present and measurable on these devices.
+
+> IMPROVE THE RESULT
+
+
+3. **Impact of Layout Complexity:**
+    - Simplifying the layout of list items does not resolve the issue. Even the simplest layouts with a single `TextView` exhibit the lag when the effect is enabled.
+ 
+> NOT RELATED
 
 4. **Build Configuration:**
     - The problem persists across debug and release builds, ruling out debug-related overhead as a factor.
+ 
+> NOT RELATED
 
 5. **Library Versions:**
     - No significant differences were observed between the tested versions of Jetpack Navigation and Navigation Compose.
+ 
+> NOT RELATED
+
 
 ## Conclusion
 
