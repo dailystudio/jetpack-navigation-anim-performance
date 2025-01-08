@@ -93,6 +93,7 @@ The performance issue is strongly linked to the use of the `ripple` effect in Je
 Future work may involve:
 - Exploring alternative implementations of touch feedback effects.
 - Reporting the issue to the Jetpack development team. 
+  - Jetpack Navigation: [https://issuetracker.google.com/issues/388310035](https://issuetracker.google.com/issues/388310035)
   - Jetpack Compose: [https://issuetracker.google.com/issues/301488789](https://issuetracker.google.com/issues/301488789)
 - Experimenting with newer library versions as they become available.
 
